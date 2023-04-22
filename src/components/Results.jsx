@@ -1,18 +1,26 @@
 import ShowTurn from "./ShowTurn";
 export default function Results({ winner, xTurn, setWinner, setBoard }) {
-  console.log(winner, "winner");
   return (
     <div className="results">
+      <button
+        className="resetBtn"
+        onClick={() => {
+          setWinner({ ...winner, didWin: false, draw: false });
+          setBoard(Array(9).fill(null));
+        }}
+      >
+        Reset game
+      </button>
+
       {!winner.didWin && !winner.draw && <ShowTurn turn={xTurn} />}
       {winner.didWin && !winner.draw && (
         <>
           <h1>
-            We have a winner!
-            <span className={`${winner.winner == "O" ? "o" : "x"}`}>
+            <span className={`${winner.winner == "Computer" ? "o" : "x"}`}>
               {" "}
               {winner.winner}
             </span>{" "}
-            Have won the game!
+            won the game!
           </h1>
           <button
             className="resetBtn"
@@ -21,7 +29,7 @@ export default function Results({ winner, xTurn, setWinner, setBoard }) {
               setBoard(Array(9).fill(null));
             }}
           >
-            Reset game
+            Play again
           </button>
         </>
       )}

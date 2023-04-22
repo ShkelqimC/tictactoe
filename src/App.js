@@ -6,13 +6,20 @@ import Scores from './components/Scores';
 import ShowTurn from './components/ShowTurn';
 import Results from './components/Results';
 
+let moves = {
+  middle:4,
+  upLeft:0,
+  upRight:2,
+  bottomLeft: 6,
+  bottomRight: 8,
+}
 
 let squares = new Array(9).fill(null);
 function App() {
   const [board, setBoard] = useState(Array(9).fill(null));
   const [xTurn, setXTurn] = useState(true)
   const [winner, setWinner] = useState({draw: false, didWin: false, winner: ''})
-  const [score, setScore] = useState({X: 0, O: 0})
+  const [score, setScore] = useState({Player: 0, Computer: 0})
 
   const winCombos = [
     [0,1,2],
@@ -36,12 +43,12 @@ function App() {
     var win = false
     winCombos.some((row, rIndex) => {
       if(row.every(i => board[i] == 'X')){
-        setWinner({...winner, didWin:true, winner: 'X'})
-        setScore({...score, X:++score.X})
+        setWinner({...winner, didWin:true, winner: 'Player'})
+        setScore({...score, Player:++score.Player})
         win = true;
       }else if(row.every(i => board[i] == 'O')){
-        setWinner({...winner, didWin:true, winner: 'O'})
-        setScore({...score, O:++score.O})
+        setWinner({...winner, didWin:true, winner: 'Computer'})
+        setScore({...score, Computer:++score.Computer})
         win = true;
       }
 
@@ -56,6 +63,29 @@ function App() {
     }
   }
 
+  useEffect(() => {
+    if(!xTurn) computerMove();
+  }, [xTurn])
+
+
+  const computerMove = () => {
+
+    var availableMoves = [];
+    board.map((x, i) => {
+      if(x === null){
+        availableMoves.push(i);
+      }
+    })
+    const randomIndex = Math.floor(Math.random() * availableMoves.length);
+    handleSquareClick(availableMoves[randomIndex])
+    // handleSquareClick(availableMoves[item])
+      // var randomnumber=Math.floor((Math.random() * 9))
+   
+
+        // handleSquareClick(randomnumber)
+    
+    // console.log(randomnumber, "randomnr")
+  }
 
   const handleSquareClick = ( index)  => {
     const updateBoard = board.map((s, i) => {
