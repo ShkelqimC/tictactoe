@@ -67,24 +67,75 @@ function App() {
     if(!xTurn) computerMove();
   }, [xTurn])
 
+  /*
+        for (let j  = 0;  j < row.length; j++) {
+        if(takenSquares.includes(row[j])){
+          if(board[row[j]==='X']){
+            numPlayerMarks++;
+          }
+        }else{
+          numAvailableSquares++;
+          lastAvailableSquare = combo[j];
+        }
+        
+      }
+      
+      */
+
+  function checkForTwo(playerMark,availableSquares,takenSquares,board ) {
+    for (let i = 0; i < winCombos.length; i++) {
+      const combo = winCombos[i];
+      let numPlayerMarks = 0;
+      let numAvailableSquares = 0;
+      let lastAvailableSquare = -1;
+  
+      // Count the number of player marks and available squares in the combination
+      for (let j = 0; j < combo.length; j++) {
+        if (takenSquares.includes(combo[j])) {
+          if (playerMark === board[combo[j]]) {
+            numPlayerMarks++;
+          }
+        } else {
+          numAvailableSquares++;
+          lastAvailableSquare = combo[j];
+        }
+      }
+  
+      // If the player has two marks in the combination and there is one available square
+      // in the same combination, return the index of the available square
+      if (numPlayerMarks === 2 && numAvailableSquares === 1) {
+        return lastAvailableSquare;
+      }
+    }
+  
+    // If there are no two-in-a-row situations, return -1
+    return -1;
+  
+  }
 
   const computerMove = () => {
 
-    var availableMoves = [];
+    var availableSquares = [];
+    var takenSquares = []
+    let numPlayerMarks = 0;
+    let numAvailableSquares = 0;
     board.map((x, i) => {
       if(x === null){
-        availableMoves.push(i);
+        availableSquares.push(i);
+      }else{
+        takenSquares.push(i)
       }
     })
-    const randomIndex = Math.floor(Math.random() * availableMoves.length);
-    handleSquareClick(availableMoves[randomIndex])
-    // handleSquareClick(availableMoves[item])
-      // var randomnumber=Math.floor((Math.random() * 9))
-   
+    var index = checkForTwo("X", availableSquares, takenSquares, board)
+   debugger
+       
 
-        // handleSquareClick(randomnumber)
-    
-    // console.log(randomnumber, "randomnr")
+    const randomIndex = Math.floor(Math.random() * availableSquares.length);
+
+    debugger
+    if(index !== -1) return handleSquareClick(index)
+
+    handleSquareClick(availableSquares[randomIndex])
   }
 
   const handleSquareClick = ( index)  => {
@@ -106,41 +157,7 @@ function App() {
       <Scores scores={score} xTurn={xTurn}/>
         <Board board={board} onClick={winner.didWin ? null : handleSquareClick}/>
 
-        <Results winner={winner} xTurn={xTurn} setWinner={setWinner} setBoard={setBoard}/>
-
-
-        
-
-        {/* {(!winner.didWin && !winner.draw) && <ShowTurn turn={xTurn}/>}
-        {winner.didWin && (
-          <div className='results'>
-
-            <h1>We have a winner!<span className={`${winner.winner == 'O' ? 'o' : 'x'}`}> {winner.winner}</span> Have won the game!</h1>
-            <button className='resetBtn' onClick={() =>{ 
-              setWinner({...winner, didWin: false, draw:false})
-              setBoard(Array(9).fill(null))                   
-              }}>              
-              Reset game
-            
-            </button>
-
-          </div>
-        )}
-
-        {(winner.draw && !winner.didWin) && (
-           <div className='results'>
-          <h1>We have a DRAW!</h1>
-          <button className='resetBtn' onClick={() =>{ 
-            setWinner({...winner, didWin: false, draw:false})
-            setBoard(Array(9).fill(null))                   
-          }}>              
-            Reset game
-          
-          </button>
-          </div>
-        )} */}
-
-       
+        <Results winner={winner} xTurn={xTurn} setWinner={setWinner} setBoard={setBoard}/>       
     </main>
    
    )
