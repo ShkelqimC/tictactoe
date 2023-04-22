@@ -17,6 +17,87 @@ body {
   height: 100px;
   width: 100%;
   margin: 0;
-  border: 2px solid green;
+  border: 2px solid white;
   box-sizing: border-box;
+  font-size: 65px;
+  text-align: center;
+  line-height: 5rem;
+  font-weight: bold;
+}
+.x {
+  color: #1d62f8;
+}
+.o {
+  color: red;
+}
+
+.square:hover {
+  box-shadow: 0px 0px 15px #888;
+}
+/* .scoreDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  width: 400px;
+}
+.scoreDiv h1 {
+  margin: 0;
+  padding: 0;
+  box-shadow: 0px 0px 10px #1d62f8;
+} */
+.results {
+  text-align: center;
+}
+.resetBtn {
+  background-color: rgb(38, 50, 61);
+  color: white;
+  height: 40px;
+  width: 100px;
+  border-radius: 10px;
+  border: 2px solid white;
+}
+.resetBtn:hover {
+  background-color: rgb(68, 78, 87);
+}
+.xPlaying {
+  display: flex;
+}
+.showXturn {
+}
+.whosTurn {
+  text-align: center;
+}
+.scoreDiv {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 20rem;
+  font-size: 1.5em;
+  background-color: white;
+  margin: 3rem auto;
+  box-shadow: 0px 0px 8px #ebe8e8;
+  border-radius: 0.5rem;
+  font-weight: bold;
+}
+.score {
+  color: black;
+  width: 100%;
+  text-align: center;
+  padding: 1rem 0;
+}
+.x-score {
+  color: rgb(44, 135, 255);
+  border-bottom: 5px solid;
+  border-radius: 0.5rem 0 0 0.5rem;
+}
+.o-score {
+  color: rgb(255, 70, 37);
+  border-bottom: 5px solid;
+  border-radius: 0rem 0.5rem 0.5rem 0;
+}
+.inactive {
+  border-bottom: 5px solid transparent;
 }
