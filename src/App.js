@@ -19,7 +19,7 @@ function App() {
   const [board, setBoard] = useState(Array(9).fill(null));
   const [xTurn, setXTurn] = useState(true)
   const [winner, setWinner] = useState({draw: false, didWin: false, winner: ''})
-  const [score, setScore] = useState({Player: 0, Computer: 0})
+  const [score, setScore] = useState({Player: 0, Computer: 0, Draw:0})
 
   const winCombos = [
     [0,1,2],
@@ -54,17 +54,25 @@ function App() {
 
     })
     if(win == false && board.every(x => x!==null)){
+      debugger;
+      setScore({...score, Draw:++score.Draw})
       setWinner({...winner, draw:true})   
     }
 
 
-    if(draw){
-      setWinner({...winner, draw:true})
-    }
+    // if(draw){
+    //   setWinner({...winner, draw:true})
+    //   setScore({...score, Draw:score.Draw++})
+    // }
   }
 
   useEffect(() => {
-    if(!xTurn) computerMove();
+
+    if(!xTurn){
+      setTimeout(() => {
+        computerMove();
+      }, 500)
+    } 
   }, [xTurn])
 
   /*
@@ -82,17 +90,15 @@ function App() {
       
       */
 
-  function checkForTwo(playerMark,availableSquares,takenSquares,board ) {
+  function checkForTwo(takenSquares,board ) {
     for (let i = 0; i < winCombos.length; i++) {
       const combo = winCombos[i];
       let numPlayerMarks = 0;
       let numAvailableSquares = 0;
       let lastAvailableSquare = -1;
-  
-      // Count the number of player marks and available squares in the combination
       for (let j = 0; j < combo.length; j++) {
         if (takenSquares.includes(combo[j])) {
-          if (playerMark === board[combo[j]]) {
+          if ("X" === board[combo[j]]) {
             numPlayerMarks++;
           }
         } else {
@@ -100,15 +106,12 @@ function App() {
           lastAvailableSquare = combo[j];
         }
       }
-  
-      // If the player has two marks in the combination and there is one available square
-      // in the same combination, return the index of the available square
+
       if (numPlayerMarks === 2 && numAvailableSquares === 1) {
         return lastAvailableSquare;
       }
     }
   
-    // If there are no two-in-a-row situations, return -1
     return -1;
   
   }
@@ -126,13 +129,11 @@ function App() {
         takenSquares.push(i)
       }
     })
-    var index = checkForTwo("X", availableSquares, takenSquares, board)
-   debugger
+    var index = checkForTwo( takenSquares, board)
+
        
 
     const randomIndex = Math.floor(Math.random() * availableSquares.length);
-
-    debugger
     if(index !== -1) return handleSquareClick(index)
 
     handleSquareClick(availableSquares[randomIndex])
