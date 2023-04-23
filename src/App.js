@@ -90,29 +90,73 @@ function App() {
       
       */
 
+      function findNextMove(takenSquares,board, availableSquares ){
+        for (let i = 0; i < winCombos.length; i++) {
+          const combo = winCombos[i];
+          let numComputerMarks = 0;
+          let numAvailableSquares = 0;
+          let lastAvailableSquare = -1;
+      
+          for (let j = 0; j < combo.length; j++) {
+            if (takenSquares.includes(combo[j])) {
+              if ("O" === board[combo[j]]) {
+                numComputerMarks++;
+              }
+            } else {
+              numAvailableSquares++;
+              lastAvailableSquare = combo[j];
+            }
+          }
+      
+          if (numComputerMarks === 2 && numAvailableSquares === 1) {
+            return lastAvailableSquare;
+          }
+        }
+
+        for (let i = 0; i < winCombos.length; i++) {
+          const combo = winCombos[i];
+          let numPlayerMarks = 0;
+          let numAvailableSquares = 0;
+          let lastAvailableSquare = -1;
+      
+          for (let j = 0; j < combo.length; j++) {
+            if (takenSquares.includes(combo[j])) {
+              if ("X" === board[combo[j]]) {
+                numPlayerMarks++;
+              }
+            } else {
+              numAvailableSquares++;
+              lastAvailableSquare = combo[j];
+            }
+          }
+      
+          if (numPlayerMarks === 2 && numAvailableSquares === 1) {
+            return lastAvailableSquare;
+          }
+        }
+      
+        // If there are no two-in-a-row or three-in-a-row situations, make a random move
+        return availableSquares[Math.floor(Math.random() * availableSquares.length)];
+
+      }
   function checkForTwo(takenSquares,board ) {
     for (let i = 0; i < winCombos.length; i++) {
       const combo = winCombos[i];
       let numPlayerMarks = 0;
-      let numComputerMarks = 0;
       let numAvailableSquares = 0;
       let lastAvailableSquare = -1;
-      let lastAvailableWinSquare = -1;
       for (let j = 0; j < combo.length; j++) {
         if (takenSquares.includes(combo[j])) {
           if ("X" === board[combo[j]]) {
             numPlayerMarks++;
-          }else if ("O" === board[combo[j]]) {
-            numComputerMarks++;
           }
         } else {
           numAvailableSquares++;
           lastAvailableSquare = combo[j];
         }
       }
-      if(numComputerMarks === 2 && numAvailableSquares === 1){
-        return lastAvailableSquare
-      }else if (numPlayerMarks === 2 && numAvailableSquares === 1) {
+
+      if (numPlayerMarks === 2 && numAvailableSquares === 1) {
         return lastAvailableSquare;
       }
     }
@@ -134,7 +178,7 @@ function App() {
         takenSquares.push(i)
       }
     })
-    var index = checkForTwo( takenSquares, board)
+    var index = findNextMove( takenSquares, board, availableSquares)
 
        
 
