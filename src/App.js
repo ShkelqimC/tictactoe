@@ -94,20 +94,25 @@ function App() {
     for (let i = 0; i < winCombos.length; i++) {
       const combo = winCombos[i];
       let numPlayerMarks = 0;
+      let numComputerMarks = 0;
       let numAvailableSquares = 0;
       let lastAvailableSquare = -1;
+      let lastAvailableWinSquare = -1;
       for (let j = 0; j < combo.length; j++) {
         if (takenSquares.includes(combo[j])) {
           if ("X" === board[combo[j]]) {
             numPlayerMarks++;
+          }else if ("O" === board[combo[j]]) {
+            numComputerMarks++;
           }
         } else {
           numAvailableSquares++;
           lastAvailableSquare = combo[j];
         }
       }
-
-      if (numPlayerMarks === 2 && numAvailableSquares === 1) {
+      if(numComputerMarks === 2 && numAvailableSquares === 1){
+        return lastAvailableSquare
+      }else if (numPlayerMarks === 2 && numAvailableSquares === 1) {
         return lastAvailableSquare;
       }
     }
